@@ -9,6 +9,7 @@ rulepath = RulePath
 UrlDeny = optionIsOn(UrlDeny)
 PostCheck = optionIsOn(postMatch)
 CookieCheck = optionIsOn(cookieMatch)
+ReferrerCheck = optionIsOn(ReferrerMatch)
 WhiteCheck = optionIsOn(whiteModule)
 PathInfoFix = optionIsOn(PathInfoFix)
 attacklog = optionIsOn(attacklog)
@@ -63,6 +64,7 @@ uarules=read_rule('user-agent')
 wturlrules=read_rule('whiteurl')
 postrules=read_rule('post')
 ckrules=read_rule('cookie')
+rfrules=read_rule('referrer')
 
 
 function say_html()
@@ -180,7 +182,19 @@ function cookie()
     end
     return false
 end
-
+function referrer()
+    local rf = ngx.var.referer
+    if ReferrerCheck and rf then
+        for _,rule in pairs(rfrules) do
+            if rule ~="" and ngxmatch(rf,rule,"isjo") then
+                log('Referrer',ngx.var.referer,"-",rule)
+                say_html()
+            return true
+            end
+        end
+    end
+    return false
+end
 function denycc()
     if CCDeny then
         local uri=ngx.var.uri

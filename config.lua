@@ -4,6 +4,7 @@ logdir = "/usr/local/nginx/logs/hack/"
 UrlDeny="on"
 Redirect="on"
 CookieMatch="on"
+ReferrerMatch="on"
 postMatch="on" 
 whiteModule="on" 
 black_fileExt={"php","jsp"}

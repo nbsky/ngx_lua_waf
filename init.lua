@@ -183,11 +183,12 @@ function cookie()
     return false
 end
 function referrer()
-    local rf = ngx.var.referer
+    local rf = ngx.var.http_referer
+    -- ngx.say(rf)
     if ReferrerCheck and rf then
         for _,rule in pairs(rfrules) do
             if rule ~="" and ngxmatch(rf,rule,"isjo") then
-                log('Referrer',ngx.var.referer,"-",rule)
+                log('Referrer',ngx.var.http_referer,"-",rule)
                 say_html()
             return true
             end
